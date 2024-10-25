@@ -17,7 +17,7 @@ ClimateDataDownloader/
 ├── environment.yml       # Conda environment file with dependencies
 ├── README.md             # Project overview and usage instructions
 └── data/                 # Directory for storing downloaded data (user-defined)
-
+```
 
 ## Setup and Installation
 
