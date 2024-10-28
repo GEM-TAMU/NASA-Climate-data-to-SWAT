@@ -2,9 +2,10 @@ name: NASA_earth_exchange
 channels:
   - conda-forge
 dependencies:
-  - python=3.8
+  - python=3.11
   - geopandas
   - numpy
   - pandas
   - netCDF4
-  - wget
+  - pip:
+    - wget
