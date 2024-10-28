@@ -1,0 +1,21 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+.git
+# Sphinx documentation
+docs/_build/
+docs/_static/
+docs/templates/
+
+.ipynb_checkpoints
+.pytest_cache
+.vscode
+swatp_pst.egg-info
+flopy.egg-info
+pyemu.egg-info
+build
+dist
+.trash/
+*.code-workspace
+.DS_Store
+# SWAT-MODFLOW outputs

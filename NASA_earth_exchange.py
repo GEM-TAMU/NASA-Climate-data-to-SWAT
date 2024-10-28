@@ -76,6 +76,8 @@ class ClimateDataDownloader:
 
     def process_netcdf(self):
         data_dir = os.path.join(self.working_dir, "GDDP-CMIP6/ACCESS-CM2")
+        if not os.path.isdir(data_dir):
+            os.makedirs(data_dir)
         data_dict_hist = {}
         data_dict_ssp = {}
         for ssp in sorted(os.listdir(data_dir)):
@@ -209,7 +211,7 @@ class ClimateDataDownloader:
 
 # Example usage
 if __name__ == "__main__":
-    working_dir = r"/home/arvinder/Downloads/HTT_L07"
+    working_dir = "D:\\Projects\\Watersheds\\Ghana\\Analysis\\climate_scenarios"
     dataset_name = "GDDP-CMIP6"
     model_name = "ACCESS-CM2"
     ssp_of_interest = ["historical", "ssp126", "ssp245", "ssp370", "ssp585"]
@@ -222,7 +224,7 @@ if __name__ == "__main__":
                                         ssp_of_interest, meta_data_format,
                                         variables_of_interest, versions_avail)
     # Download netcdf files
-    # downloader.download_all()
+    downloader.download_all()
 
     # Process netcdf and convert to SWAT format
     downloader.convert_to_swat()
