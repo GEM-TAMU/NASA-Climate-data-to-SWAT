@@ -7,5 +7,7 @@ dependencies:
   - numpy
   - pandas
   - netCDF4
+  - psutil
   - pip:
     - wget
+    - termcolor
