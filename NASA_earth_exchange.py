@@ -93,7 +93,7 @@ class ClimateDataDownloader:
 
     def download_all(self):
         print(
-            f" > Start downloading dataset in parallel processing"
+            f"\n > Start downloading dataset in parallel processing"
             + colored(f" with {self.nworkers} workers", 'magenta')
             + colored(
                 " ... initiated", 'blue') + "\n"
@@ -207,7 +207,7 @@ class ClimateDataDownloader:
 
     def convert_to_swat(self):
         print(
-            f" > Start converting netcdf to SWAT weather input formats"
+            f"\n > Start converting netcdf to SWAT weather input formats"
             + colored(
                 " ... initiated", 'blue') + "\n")
 
@@ -248,10 +248,10 @@ class ClimateDataDownloader:
                 df_data.index = pd.to_datetime(df_data.index.astype(str))
                 full_date_range = pd.date_range(start=df_data.index.min(), end=df_data.index.max(), freq='D')
                 missing_dates = full_date_range.difference(df_data.index)
-                # for date in missing_dates:
-                #     print(
-                #         f" ... replaced missing value for {ssp}, {var}, {date.date()} with -99.0"
-                #         + colored(" ... missing", 'yellow'))
+                for date in missing_dates:
+                    print(
+                        f" ... replaced missing value for {ssp}, {var}, {date.date()} with -99.0"
+                        + colored(" ... missing", 'yellow'))
                 df_data = df_data.reindex(full_date_range, fill_value=np.nan)
                 # print(type(df_data))
                 if var in ["tas", "tasmax", "tasmin"]:
@@ -348,7 +348,6 @@ class ClimateDataDownloader:
                     df_info['NAME'].to_csv(f, index=False,
                                             header=False, lineterminator='\n')  # Write the DataFrame column to the file
     '''
-
                 # df_info.to_csv(save_path, index=False) # write climate info
 
 
@@ -426,9 +425,6 @@ if __name__ == "__main__":
     downloader.dates_historical = np.arange(1950, 1952)
     downloader.dates_projected = np.arange(2015, 2017)
     # Download netcdf files
-    # downloader.download_all()
-
-    # testnc()
-
+    downloader.download_all()
     # Process netcdf and convert to SWAT format
     downloader.convert_to_swat()
