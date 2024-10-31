@@ -408,7 +408,7 @@ class ClimateDataDownloader:
 if __name__ == "__main__":
     '''
     '''
-    working_dir = "D:\\Projects\\Watersheds\\Ghana\\Analysis\\climate_scenarios"
+    working_dir = "/mnt/Data/spark/dawhenya_climatedata"
     dataset_name = "GDDP-CMIP6"
     model_name = "FGOALS-g3"
     ssp_of_interest = ["historical", "ssp126", "ssp245", "ssp370", "ssp585"]
@@ -422,8 +422,10 @@ if __name__ == "__main__":
                                         variables_of_interest, versions_avail)
 
 
-    downloader.dates_historical = np.arange(1950, 1952)
-    downloader.dates_projected = np.arange(2015, 2017)
+    # downloader.dates_historical = np.arange(1950, 1952)
+    # downloader.dates_projected = np.arange(2015, 2017)
+    downloader.nworkers = 32
+    ssp_of_interest = ["historical"]
     # Download netcdf files
     downloader.download_all()
     # Process netcdf and convert to SWAT format
