@@ -44,12 +44,16 @@ The `environment.yml` file specifies the following dependencies:
    channels:
      - conda-forge
    dependencies:
-     - python=3.8
-     - geopandas
-     - numpy
-     - pandas
-     - netCDF4
-     - wget
+      - python=3.11
+      - geopandas
+      - numpy
+      - pandas
+      - netCDF4
+      - psutil
+      - pip:
+         - wget
+         - termcolor
+
    ```
 
 ## Usage
