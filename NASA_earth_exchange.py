@@ -92,6 +92,12 @@ class ClimateDataDownloader:
 
 
     def download_all(self):
+        time = datetime.now().strftime('- %m/%d/%y %H:%M:%S -')
+        if os.path.exists(os.path.join(self.working_dir, "downloadednc.log")):
+            os.remove(os.path.join(self.working_dir, "downloadednc.log"))
+        with open(os.path.join(self.working_dir, "downloadednc.log"), "w") as f:
+            f.write(f"# log files created by nc2swat ... {time}\n")
+
         print(
             f"\n > Start downloading dataset in parallel processing"
             + colored(f" with {self.nworkers} workers", 'magenta')
@@ -126,6 +132,7 @@ class ClimateDataDownloader:
                 self.download_nc_file(vers, var, ssp, date, save_folder)
                 print(f"  ... D: {self.dataset_name}, M: {self.model_name}, " +
                       f"ssp: {ssp}, Var: {var}, Ver: {vers}, Date:{date}" + colored(" ... OK", 'green'))
+                self.write_ok_log_file(ssp, var, date)
                 return
             except HTTPError as e:
                 if e.code == 504 and attempt < self.max_retries - 1:
@@ -139,8 +146,10 @@ class ClimateDataDownloader:
                     elif vers == self.versions_avail[1]:
                         vers = self.versions_avail[0]
                     else:
-                        print(f"  ... All versions failed to download for {var} on {date}" + colored(" ... failed", 'red'))
+                        print(f"  ... All versions for {ssp} failed to download for {var} on {date}" + colored(" ... failed", 'red'))
+                        self.write_failed_log_file(ssp, var, date)
                         return
+
                     
     def process_netcdf(self):
         data_dir = os.path.join(self.working_dir, f"{self.dataset_name}/{self.model_name}")
@@ -403,12 +412,29 @@ class ClimateDataDownloader:
         firstline = f"{filenam}: {des} - file written by ... {time}"
         secondline = "filename"
         return firstline, secondline
+    
+
+    def write_ok_log_file(self, ssp, var, date):
+        with open(os.path.join(self.working_dir, "downloadednc.log"), "a") as f:
+            # f.write("# log files created by swatp_pst\n")
+            f.write(f"{ssp},{var},{date},ok\n")
+
+    def write_failed_log_file(self, ssp, var, date):
+        with open(os.path.join(self.working_dir, "downloadednc.log"), "a") as f:
+            # f.write("# log files created by swatp_pst\n")
+            f.write(f"{ssp},{var},{date},failed\n")
+
+
+
+
+
 
 # Example usage
 if __name__ == "__main__":
     '''
     '''
-    working_dir = "D:\\Projects\\Watersheds\\Ghana\\Analysis\\climate_scenarios"
+    #NOTE: it's the user working directory and should include a shapefile for study area 
+    working_dir = "D:\\Projects\\Watersheds\\Ghana\\Analysis\\climate_scenarios" 
     dataset_name = "GDDP-CMIP6"
     model_name = "FGOALS-g3"
     ssp_of_interest = ["historical", "ssp126", "ssp245", "ssp370", "ssp585"]
@@ -421,10 +447,8 @@ if __name__ == "__main__":
                                         ssp_of_interest, meta_data_format,
                                         variables_of_interest, versions_avail)
 
-
-    downloader.dates_historical = np.arange(1950, 1952)
-    downloader.dates_projected = np.arange(2015, 2017)
     # Download netcdf files
     downloader.download_all()
+
     # Process netcdf and convert to SWAT format
-    downloader.convert_to_swat()
+    # downloader.convert_to_swat()
