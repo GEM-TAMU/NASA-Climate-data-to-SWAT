@@ -168,6 +168,7 @@ class ClimateDataDownloader:
                     df = pd.DataFrame()
                     first_time = True
                     for data_file_nm in sorted(os.listdir(climate_info_path)):
+                        # print(data_file_nm)
                         data_file_pth = os.path.join(climate_info_path, data_file_nm)
                         data_file = nc.Dataset(data_file_pth, mode='r')
                         num_days = data_file[var].shape[0]
@@ -359,7 +360,6 @@ class ClimateDataDownloader:
     '''
                 # df_info.to_csv(save_path, index=False) # write climate info
 
-
                 projected_df = projected_dict[var]
                 df_data = pd.concat([hist_df, projected_df])
 
@@ -425,21 +425,19 @@ class ClimateDataDownloader:
             f.write(f"{ssp},{var},{date},failed\n")
 
 
-
-
-
-
 # Example usage
 if __name__ == "__main__":
-    '''
-    '''
+
     #NOTE: it's the user working directory and should include a shapefile for study area 
     working_dir = "D:\\Projects\\Watersheds\\Ghana\\Analysis\\climate_scenarios" 
     dataset_name = "GDDP-CMIP6"
     model_name = "FGOALS-g3"
     ssp_of_interest = ["historical", "ssp126", "ssp245", "ssp370", "ssp585"]
     meta_data_format = "r3i1p1f1"
-    variables_of_interest = ["hurs", "huss", "pr", "rlds", "rsds", "sfcWind", "tas", "tasmax", "tasmin"]
+    variables_of_interest = [
+                    "hurs", "huss", "pr", "rlds", "rsds", 
+                    "sfcWind", "tas", "tasmax", "tasmin"
+                    ]
     versions_avail = ["", "_v1.1", "_v1.2"]
 
     # Instantiate the object
@@ -451,4 +449,6 @@ if __name__ == "__main__":
     downloader.download_all()
 
     # Process netcdf and convert to SWAT format
-    # downloader.convert_to_swat()
+    downloader.convert_to_swat()
+
+
