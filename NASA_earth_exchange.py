@@ -23,8 +23,8 @@ class ClimateDataDownloader:
         self.variables_of_interest = variables_of_interest
         self.versions_avail = versions_avail
         self.west, self.south, self.east, self.north = self._get_bounds()
-        self.dates_historical = np.arange(1950, 2015)
-        self.dates_projected = np.arange(2015, 2101)
+        self.dates_historical = np.arange(1950, 2015) # historical years from 1950 ~ 2014
+        self.dates_projected = np.arange(2015, 2101) # projected years from 2015 ~ 2100
         self.max_retries = 3
         self.timeout = 10
         self.nworkers = self._core_workers()
@@ -191,9 +191,8 @@ class ClimateDataDownloader:
                         for lat in latitudes:
                             for lon in longitudes:
                                 lat_lon_str.append(
-                                    f"{float(lat):.3f}_{float(self._conv_360_180(lon)):.3f}"
+                                    f"{int(lat * 1000)}_{int(float(self._conv_360_180(lon)) * 1000)}"
                                     )
-                                # lat_lon_str.append(f"{int(lat)}_{int(lon)}")
                                 lat_lon_pairs.append([f"{float(lat):.3f}", f"{float(self._conv_360_180(lon)):.3f}"])
                         if first_time:
                             df = pd.DataFrame(var_data, columns=lat_lon_str)
@@ -428,7 +427,8 @@ class ClimateDataDownloader:
 # Example usage
 if __name__ == "__main__":
 
-    working_dir = "/mnt/Data/spark/dawhenya_climatedata"
+    # working_dir = "/mnt/Data/spark/dawhenya_climatedata"
+    working_dir = "D:\\Projects\\Watersheds\\Ghana\\Analysis\\climate_scenarios"
     dataset_name = "GDDP-CMIP6"
     model_name = "FGOALS-g3"
     ssp_of_interest = ["historical", "ssp126", "ssp245", "ssp370", "ssp585"]
@@ -449,5 +449,4 @@ if __name__ == "__main__":
 
     # Process netcdf and convert to SWAT format
     downloader.convert_to_swat()
-
-
+    
