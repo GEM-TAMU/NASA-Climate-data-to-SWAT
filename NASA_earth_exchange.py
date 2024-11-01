@@ -428,8 +428,7 @@ class ClimateDataDownloader:
 # Example usage
 if __name__ == "__main__":
 
-    #NOTE: it's the user working directory and should include a shapefile for study area 
-    working_dir = "D:\\Projects\\Watersheds\\Ghana\\Analysis\\climate_scenarios" 
+    working_dir = "/mnt/Data/spark/dawhenya_climatedata"
     dataset_name = "GDDP-CMIP6"
     model_name = "FGOALS-g3"
     ssp_of_interest = ["historical", "ssp126", "ssp245", "ssp370", "ssp585"]
